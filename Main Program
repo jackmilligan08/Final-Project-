@@ -1,34 +1,34 @@
-#Main Program 
-
 import turtle
 from turtle import * 
 import random
 
 #Screen Setup (Version1) 
 screen=turtle.Screen()
-screen.setup(400,400)
+screen.setup(800,500)
 screen.title("Bombs Away")
 screen.bgcolor("skyblue")
 screen.tracer(0) 
-screen.bgpic(picname="bg1.gif")
+screen.bgpic(picname="bg2.gif")
 
 
 
 #Adding Turtles
-
 #adding player1 (aircraft carrier) 
 player1=Turtle()
+player1.penup() 
 turtle.addshape(name="player1right.gif", shape=None)
 player1.shape("player1right.gif")
-player1.setx(100) 
+player1.setx(-150)
+player1.sety(-160) 
 
 
 #adding player2 (#destroyer)
 player2=Turtle()
+player2.penup() 
 turtle.addshape(name="player2left.gif", shape=None)
 player2.shape("player2left.gif") 
-player2.setx(100)
-player2.sety(200) 
+player2.setx(150)
+player2.sety(-160) 
 
 
 while(True):
