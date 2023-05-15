@@ -29,8 +29,14 @@ player2.shape("player2left.gif")
 player2.setx(150)
 player2.sety(-165) 
 
+
+#Constants
+playerxVel = 20
+
+
 def p1right():
-    player1.xcor()==player1.xcor()+10
+    x = player1.xcor()
+    player1.setx(x+playerxVel) 
     turtle.addshape(name="player1right.gif", shape=None)
     player1.shape("player1right.gif")
 
