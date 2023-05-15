@@ -30,30 +30,30 @@ player2.setx(150)
 player2.sety(-165) 
 
 def p1right():
-    player1.xcor()=player1.xcor()+10
+    player1.xcor()==player1.xcor()+10
     turtle.addshape(name="player1right.gif", shape=None)
     player1.shape("player1right.gif")
 
 def p1left():
-    player1.xcor()=player1.xcor()-10
+    player1.xcor()==player1.xcor()-10
     turtle.addshape(name="player1left.gif", shape=None)
     player1.shape("player1left.gif")
 
 def p2right():
-    player2.xcor()=player1.xcor()+10
+    player2.xcor()==player1.xcor()+10
     turtle.addshape(name="player2right.gif", shape=None)
     player2.shape("player2right.gif")
 
 def p2left():
-    player2.xcor()=player1.xcor()-10
+    player2.xcor()==player1.xcor()-10
     turtle.addshape(name="player2left.gif", shape=None)
     player2.shape("player2left.gif")
 
 def movement():
     turtle.onkey(p1right, "a")
     turtle.onkey(p1left, "d")
-    turtle.onkey(p2right, "right")
-    turtle.onkey(p2left, "left")
+    turtle.onkey(p2right, "Right")
+    turtle.onkey(p2left, "Left")
 
 
 while(True):
