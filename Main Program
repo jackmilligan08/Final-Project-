@@ -50,8 +50,8 @@ def p2left():
     player2.shape("player2left.gif")
 
 def movement():
-    turtle.onkey(p1right, "a")
-    turtle.onkey(p1left, "d")
+    turtle.onkey(p1right, "d")
+    turtle.onkey(p1left, "a")
     turtle.onkey(p2right, "Right")
     turtle.onkey(p2left, "Left")
 
