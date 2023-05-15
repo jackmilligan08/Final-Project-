@@ -10,8 +10,6 @@ screen.bgcolor("skyblue")
 screen.tracer(0) 
 screen.bgpic(picname="bg2.gif")
 
-
-
 #Adding Turtles
 #adding player1 (aircraft carrier) 
 player1=Turtle()
@@ -29,29 +27,32 @@ player2.shape("player2left.gif")
 player2.setx(150)
 player2.sety(-165) 
 
-
 #Constants
-playerxVel = 20
+playerxVelright = 20
+playerxVelleft = -20
 
 
 def p1right():
     x = player1.xcor()
-    player1.setx(x+playerxVel) 
+    player1.setx(x+playerxVelright)
     turtle.addshape(name="player1right.gif", shape=None)
     player1.shape("player1right.gif")
 
 def p1left():
-    player1.xcor()==player1.xcor()-10
+    x = player1.xcor()
+    player1.setx(x+playerxVelleft)
     turtle.addshape(name="player1left.gif", shape=None)
     player1.shape("player1left.gif")
 
 def p2right():
-    player2.xcor()==player1.xcor()+10
+    x = player2.xcor()
+    player2.setx(x+playerxVelright)
     turtle.addshape(name="player2right.gif", shape=None)
     player2.shape("player2right.gif")
 
 def p2left():
-    player2.xcor()==player1.xcor()-10
+    x = player2.xcor()
+    player2.setx(x+playerxVelleft)
     turtle.addshape(name="player2left.gif", shape=None)
     player2.shape("player2left.gif")
 
