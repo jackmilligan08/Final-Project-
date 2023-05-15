@@ -31,28 +31,29 @@ player2.sety(-165)
 playerxVelright = 20
 playerxVelleft = -20
 
+#Global
 
 def p1right():
-    x = player1.xcor()
-    player1.setx(x+playerxVelright)
+    p1xcor = player1.xcor()
+    player1.setx(p1xcor+playerxVelright)
     turtle.addshape(name="player1right.gif", shape=None)
     player1.shape("player1right.gif")
 
 def p1left():
-    x = player1.xcor()
-    player1.setx(x+playerxVelleft)
+    p1xcor = player1.xcor()
+    player1.setx(p1xcor+playerxVelleft)
     turtle.addshape(name="player1left.gif", shape=None)
     player1.shape("player1left.gif")
 
 def p2right():
-    x = player2.xcor()
-    player2.setx(x+playerxVelright)
+    p2xcor = player2.xcor()
+    player2.setx(p2xcor+playerxVelright)
     turtle.addshape(name="player2right.gif", shape=None)
     player2.shape("player2right.gif")
 
 def p2left():
-    x = player2.xcor()
-    player2.setx(x+playerxVelleft)
+    p2xcor = player2.xcor()
+    player2.setx(p2xcor+playerxVelleft)
     turtle.addshape(name="player2left.gif", shape=None)
     player2.shape("player2left.gif")
 
@@ -62,7 +63,20 @@ def movement():
     turtle.onkey(p2right, "Right")
     turtle.onkey(p2left, "Left")
 
+def p1borders():
+    
+    return
 
+def p2borders():
+    
+    return
+
+def p1collisions():
+    return
+
+def p2collisions():
+    return 
+    
 while(True):
     screen.update()
     turtle.listen()
