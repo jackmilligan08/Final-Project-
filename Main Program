@@ -32,29 +32,31 @@ playerxVelright = 20
 playerxVelleft = -20
 
 #Global
+turtle.addshape(name="player1right.gif", shape=None)
+turtle.addshape(name="player1left.gif", shape=None)
+turtle.addshape(name="player2right.gif", shape=None)
+turtle.addshape(name="player2left.gif", shape=None)
+
 
 def p1right():
     p1xcor = player1.xcor()
     player1.setx(p1xcor+playerxVelright)
-    turtle.addshape(name="player1right.gif", shape=None)
+    #todo - possibly optimize by only setting shape if it changed direction
     player1.shape("player1right.gif")
 
 def p1left():
     p1xcor = player1.xcor()
     player1.setx(p1xcor+playerxVelleft)
-    turtle.addshape(name="player1left.gif", shape=None)
     player1.shape("player1left.gif")
 
 def p2right():
     p2xcor = player2.xcor()
     player2.setx(p2xcor+playerxVelright)
-    turtle.addshape(name="player2right.gif", shape=None)
     player2.shape("player2right.gif")
 
 def p2left():
     p2xcor = player2.xcor()
     player2.setx(p2xcor+playerxVelleft)
-    turtle.addshape(name="player2left.gif", shape=None)
     player2.shape("player2left.gif")
 
 def movement():
@@ -81,3 +83,4 @@ while(True):
     screen.update()
     turtle.listen()
     movement()
+
