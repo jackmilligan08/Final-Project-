@@ -4,7 +4,7 @@ import random
 
 #Screen Setup (Version1) 
 screen=turtle.Screen()
-screen.setup(800,500)
+screen.setup(850,515)
 screen.title("Bombs Away")
 screen.bgcolor("skyblue")
 screen.tracer(0) 
@@ -17,7 +17,7 @@ player1.penup()
 turtle.addshape(name="player1right.gif", shape=None)
 player1.shape("player1right.gif")
 player1.setx(-150)
-player1.sety(-170) 
+player1.sety(-165) 
 
 #adding player2 (#destroyer)
 player2=Turtle()
@@ -25,7 +25,7 @@ player2.penup()
 turtle.addshape(name="player2left.gif", shape=None)
 player2.shape("player2left.gif")
 player2.setx(150)
-player2.sety(-165) 
+player2.sety(-161) 
 
 #Constants
 playerxVelright = 20
@@ -41,7 +41,7 @@ turtle.addshape(name="player2left.gif", shape=None)
 def p1right():
     p1xcor = player1.xcor()
     player1.setx(p1xcor+playerxVelright)
-    #todo - possibly optimize by only setting shape if it changed direction
+    #todo - possibly optimize by only setting shape if it changed direction 5/15
     player1.shape("player1right.gif")
 
 def p1left():
@@ -83,4 +83,3 @@ while(True):
     screen.update()
     turtle.listen()
     movement()
-
