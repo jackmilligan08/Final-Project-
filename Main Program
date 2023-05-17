@@ -54,6 +54,39 @@ def p1collisions():
 def p2collisions():
     return
 
+def createbombs():
+    global MAXBOMBS, CurrNumBombs, bomblist
+    
+    #check if you need to create more bombs,if not exit this function
+    #if you do then, calculate how many more you need to create and
+    #go in a loop for that number (or throw in some randomness)
+    
+
+ 
+    
+    numbombs = len(bomblist)
+    
+    if numbombs >= MAXBOMBS:
+        exit
+    else:
+        neededbombs = MAXBOMBS - numbombs
+        for currbomb in range(0, neededbombs):
+            bomblist.append(Turtle())
+            bombposx=random.randint(-430,430)
+            bombposy=random.randint(265, 275)
+
+
+            bomblist[currbomb].hideturtle()
+            bomblist[currbomb].penup()
+            bomblist[currbomb].speed(0)
+            bomblist[currbomb].setx(bombposx)
+            bomblist[currbomb].sety(bombposy)
+            bomblist[currbomb].shape('circle')
+            bomblist[currbomb].shapesize(stretch_len=1.5,stretch_wid=1.5)
+            bomblist[currbomb].color("black")
+            bomblist[currbomb].showturtle()
+        return
+
 #Global
 
 
@@ -102,4 +135,5 @@ turtle.addshape(name="player2left.gif", shape=None)
 while(True):
     screen.update()
     turtle.listen()
+    createbombs()
     movement()
