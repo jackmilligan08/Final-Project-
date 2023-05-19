@@ -18,13 +18,27 @@ def writescoreboard():
     scoreboard.clear() 
     p1text = playernames[0]
     p2text = playernames[1]
-    score = p1text + "    " + p2text
-    score2 = "P1" + "    " + "P2"
-    if not playernames:
-        print("list is empty") 
-        scoreboard.write(score2, font=("Times New Roman",40, "bold"), align = "center")
+
+    #variables 
+    bothplayer = p1text + "    " + p2text
+    noplayer = "P1" + "     "+  "P2"
+    nop1 = "P1" + "      " + p2text 
+    nop2 = p1text + "     " +  "P2"
+    
+
+    #both no name 
+    if playernames[0] == "" and playernames[1] == "": 
+        scoreboard.write(noplayer,  font=("Times New Roman",45, "bold"), align = "center")
+    #no player1 name 
+    elif playernames[0] == "":
+        scoreboard.write(nop1, font=("Times New Roman",45, "bold"), align = "center")
+         
+    #no player 2 name    
+    elif playernames[1] == "": 
+        scoreboard.write(nop2,  font=("Times New Roman",45, "bold"), align = "center")
+    #both player names 
     else:
-        scoreboard.write(score, font=("Times New Roman",40, "bold"), align = "center")
+        scoreboard.write(bothplayer, font=("Times New Roman",45, "bold"), align = "center")
   
 
 def player_names():
