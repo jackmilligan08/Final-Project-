@@ -1,7 +1,45 @@
 import turtle
 from turtle import * 
 import random
+import pygame
+import time 
 
+
+def play_audio():
+    pygame.init()
+    file="sound1.wav"
+    pygame.mixer.music.load(file)
+    pygame.mixer.music.play(1) 
+
+nochars = ()
+
+
+def writescoreboard():
+    scoreboard.clear() 
+    p1text = playernames[0]
+    p2text = playernames[1]
+    score = p1text + "    " + p2text
+    score2 = "P1" + "    " + "P2"
+    if not playernames:
+        print("list is empty") 
+        scoreboard.write(score2, font=("Times New Roman",40, "bold"), align = "center")
+    else:
+        scoreboard.write(score, font=("Times New Roman",40, "bold"), align = "center")
+  
+
+def player_names():
+    p1name = screen.textinput("Player 1", "Player 1's name?")
+    playernames.append(p1name)
+    p2name = screen.textinput("Player 2", "Player 2's name")
+    playernames.append(p2name) 
+    
+##file = "sound1.wav"
+##
+##print("playing sound 1")
+##os.system("afplay" + file) 
+def background():
+    player_names()
+    
 def movement():
     turtle.onkey(p1right, "d")
     turtle.onkey(p1left, "a")
@@ -54,6 +92,10 @@ def p1collisions():
 def p2collisions():
     return
 
+
+#lists
+playernames = [] 
+
 #Global
 
 
@@ -61,8 +103,8 @@ def p2collisions():
 playerxVelright = 20
 playerxVelleft = -20
 
-RIGHT_EDGE=450
-LEFT_EDGE=-450
+RIGHT_EDGE=440
+LEFT_EDGE=-440
 
 #Screen Setup (Version1) 
 screen=turtle.Screen()
@@ -90,7 +132,7 @@ player2.penup()
 turtle.addshape(name="player2left.gif", shape=None)
 player2.shape("player2left.gif")
 player2.setx(150)
-player2.sety(-171) 
+player2.sety(-172) 
 
 
 #Adding shapes 
@@ -99,7 +141,24 @@ turtle.addshape(name="player1left.gif", shape=None)
 turtle.addshape(name="player2right.gif", shape=None)
 turtle.addshape(name="player2left.gif", shape=None)
 
+#creating scoreboard
+scoreboard=turtle.Turtle()
+scoreboard.penup()
+scoreboard.goto(0,200) 
+scoreboard.hideturtle()
+scoreboard.color("Black") 
+
+
+#Functions not used in while true loop
+background()
+writescoreboard() 
+
+play_audio()
+
+
 while(True):
     screen.update()
     turtle.listen()
     movement()
+    
+
