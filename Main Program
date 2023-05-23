@@ -55,25 +55,22 @@ def p2collisions():
     return
 
 def createbombs():
-    global MAXBOMBS, CurrNumBombs, bomblist
+    global MAXBOMBS, numbombs, bomblist
     
     #check if you need to create more bombs,if not exit this function
     #if you do then, calculate how many more you need to create and
     #go in a loop for that number (or throw in some randomness)
     
-
- 
-    
     numbombs = len(bomblist)
     
     if numbombs >= MAXBOMBS:
-        exit
+        pass
     else:
         neededbombs = MAXBOMBS - numbombs
         for currbomb in range(0, neededbombs):
             bomblist.append(Turtle())
-            bombposx=random.randint(-430,430)
-            bombposy=random.randint(265, 275)
+            bombposx=random.randint(-475,475)
+            bombposy=random.randint(275, 285)
 
 
             bomblist[currbomb].hideturtle()
@@ -88,7 +85,8 @@ def createbombs():
         return
 
 #Global
-
+MAXBOMBS=15
+bomblist=[]
 
 #Constants
 playerxVelright = 20
