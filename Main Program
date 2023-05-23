@@ -5,61 +5,21 @@ import pygame
 import time
 import re 
 
+#MUSIC 
 #must use quit (q) key to stop music
 #otherwise you have to close entire idle shell 
 def play_audio():
     global pause 
     if not pause:
         pygame.init()
+        #loading in sound 
         backgroundsound="sound1.wav"
         pygame.mixer.music.load(backgroundsound)
+        #-1 allows music to always play 
         pygame.mixer.music.play(-1)
-
-def writescoreboard():
-    scoreboard.clear() 
-    p1text = playernames[0]
-    p2text = playernames[1]
-
-    #variables 
-    bothplayer = p1text + "   " + p2text
-    noplayer = "P1" + "        "+  "P2"
-    nop1 = "P1" + "      " + p2text 
-    nop2 = p1text + "     " +  "P2"
-    
-    #both no name 
-    if playernames[0] == "" and playernames[1] == "": 
-        scoreboard.write(noplayer,  font=("Courier",45, "bold"), align = "center")
-    #no player1 name 
-    elif playernames[0] == "":
-        scoreboard.write(nop1, font=("Courier",45, "bold"), align = "center")
-         
-    #no player 2 name    
-    elif playernames[1] == "": 
-        scoreboard.write(nop2,  font=("Courier",45, "bold"), align = "center")
-    #both player names 
-    else:
-        scoreboard.write(bothplayer, font=("Courier",45, "bold"), align = "center")
-
-def healthscoreboard():
-    global p1, p2
-    scoreboard2.clear()
-    healthprompt = "Health: " + str(p1health) + "           "  "Health: "  + str(p2health)
-    scoreboard2.write(healthprompt, font=("Courier", 25, "bold"), align = "center")
-    
-    
-def player_names():
-    p1name = screen.textinput("Player 1", "Player 1's name?")
-    playernames.append(p1name)
-    p2name = screen.textinput("Player 2", "Player 2's name")
-    playernames.append(p2name) 
-    
-##file = "sound1.wav"
-##
-##print("playing sound 1")
-##os.system("afplay" + file) 
-def background():
-    player_names()
-    
+        
+#MOVEMENT FUNCTIONS
+        
 def movement():
     turtle.onkey(p1right, "d")
     turtle.onkey(p1left, "a")
@@ -70,7 +30,7 @@ def movement():
     
     p1borders()
     p2borders()
-    
+
 p1right=False 
 p1left=False
 p1right=False
@@ -132,20 +92,66 @@ def p1collisions():
 def p2collisions():
     return
 
+#SCOREBOARD FUNCTIONS
+
+def background():
+    player_names()
+
+def writescoreboard():
+    scoreboard.clear() 
+    p1text = playernames[0]
+    p2text = playernames[1]
+
+    #variables 
+    bothplayer = p1text + "   " + p2text
+    noplayer = "P1" + "        "+  "P2"
+    nop1 = "P1" + "      " + p2text 
+    nop2 = p1text + "     " +  "P2"
+    
+    #both no name 
+    if playernames[0] == "" and playernames[1] == "": 
+        scoreboard.write(noplayer,  font=("Courier",45, "bold"), align = "center")
+    #no player1 name 
+    elif playernames[0] == "":
+        scoreboard.write(nop1, font=("Courier",45, "bold"), align = "center")
+         
+    #no player 2 name    
+    elif playernames[1] == "": 
+        scoreboard.write(nop2,  font=("Courier",45, "bold"), align = "center")
+    #both player names 
+    else:
+        scoreboard.write(bothplayer, font=("Courier",45, "bold"), align = "center")
+
+def healthscoreboard():
+    global p1, p2
+    scoreboard2.clear()
+    healthprompt = "Health: " + str(p1health) + "           "  "Health: "  + str(p2health)
+    scoreboard2.write(healthprompt, font=("Courier", 25, "bold"), align = "center")
+
+def winner():
+    def 
+    
+def player_names():
+    p1name = screen.textinput("Player 1", "Player 1's name?")
+    playernames.append(p1name)
+    p2name = screen.textinput("Player 2", "Player 2's name")
+    playernames.append(p2name) 
+
 def pause_hud():
     scoreboard3.clear()
     pauseprompt = "Game Paused"
     scoreboard3.write(pauseprompt ,font=("Courier", 50, "bold"), align = "center")
 
+#PAUSE AND QUIT GAME
+    
 def pausegame():
     global pause
     if (pause == True):
         scoreboard3.reset()
         scoreboard3.penup()
         scoreboard3.goto(0,-10) 
-        scoreboard3.hideturtle()        
+        scoreboard3.hideturtle()
         pause = False
-
 
     elif (pause == False):
         pause_hud() 
@@ -174,7 +180,7 @@ running = True
 pause = False  
 
 p1health = 100
-p2health = 100 
+p2health = 100
 
 #Constants
 playerxVelright = 30
@@ -258,4 +264,6 @@ while running:
         healthscoreboard()
         movement()
     
+
+
 
