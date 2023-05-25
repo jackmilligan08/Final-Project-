@@ -1,25 +1,13 @@
-#librarys
-#pygame is used for sound
-#import re is used for quit feature of game
-#turtle is the main library that allows our game to operate
-
 import turtle
 from turtle import * 
 import random
 import pygame
+import time
 import re 
-
-
-#NOTES
-#Download all gif images and sounds from google drive folder (found on github)
-#Make sure .py file is in a folder with all the items 
-#Make sure caps lock is off 
 
 #MUSIC 
 #must use quit (q) key to stop music
-#otherwise you have to close entire idle shell
-
-#fuction plays background audio for the game 
+#otherwise you have to close entire idle shell 
 def play_audio():
     global pause 
     if not pause:
@@ -31,9 +19,8 @@ def play_audio():
         pygame.mixer.music.play(-1)
         
 #MOVEMENT FUNCTIONS
-
-#function for both players movement and borders  
-def movement():
+        
+def shipmovement():
     turtle.onkey(p1right, "d")
     turtle.onkey(p1left, "a")
     turtle.onkey(p2right, "Right")
@@ -49,9 +36,7 @@ p1left=False
 p1right=False
 p1left=False 
 
-#function occurs when "d" key is pressed
-#changes shape of player 2 boat to right facing 
-#takes in global pause for pause feature of game
+
 def p1right():
     global pause 
     if not pause:
@@ -64,9 +49,6 @@ def p1right():
         else:
             p1right=False
 
-#function occurs when "w" key  is pressed
-#changes shape of player 2 boat to left facing 
-#takes in global pause for pause feature of game
 def p1left():
     global pause 
     if not pause:
@@ -74,9 +56,6 @@ def p1left():
         player1.setx(p1xcor+playerxVelleft)
         player1.shape("player1left.gif")
 
-#function occurs when right arrow keyis pressed
-#changes shape of player 2 boat to right facing 
-#takes in global pause for pause feature of game
 def p2right():
     global pause 
     if not pause:
@@ -84,9 +63,6 @@ def p2right():
         player2.setx(p2xcor+playerxVelright)
         player2.shape("player2right.gif")
 
-#function occurs when left key  is pressed
-#changes shape of player 2 boat to left facing 
-#takes in global pause for pause feature of game
 def p2left():
     global pause
     if not pause:
@@ -95,8 +71,6 @@ def p2left():
         player2.shape("player2left.gif")
 
 
-#function detects collison of player 1 with any of the edges(-440 or 440),
-#and sends the boat to the opposite side  
 def p1borders():
     p1xcor = player1.xcor()
     if p1xcor>RIGHT_EDGE:
@@ -104,9 +78,6 @@ def p1borders():
     if p1xcor<LEFT_EDGE:
         player1.setx(-1*p1xcor-25)
 
-
-#function detects collison of player 2 with any of the edges(-440 or 440),
-#and sends the boat to the opposite side  
 def p2borders():
     p2xcor = player2.xcor()
     if p2xcor>RIGHT_EDGE:
@@ -116,19 +87,86 @@ def p2borders():
     return
 
 def p1collisions():
-    return
+    global p1health
+    
+    bombposy=random.randint(275, 285)
+    bombposx=random.randint(-475,475)
+    
+    for currbomb in range(0, numbombs):
+        if abs(bomblist[currbomb].xcor() - player1.xcor())<45 and abs(bomblist[currbomb].ycor() - player1.ycor())<20:
+
+            currbomby = bomblist[currbomb].ycor()
+            bomblist[currbomb].sety(bombposy)
+            bomblist[currbomb].setx(bombposx)
+
+            p1health -= 15
 
 def p2collisions():
-    return
+    global p2health
+    
+    bombposy=random.randint(275, 285)
+    bombposx=random.randint(-475,475)
+    
+    for currbomb in range(0, numbombs):
+        if abs(bomblist[currbomb].xcor() - player2.xcor())<45 and abs(bomblist[currbomb].ycor() - player2.ycor())<20:
+
+            currbomby = bomblist[currbomb].ycor()
+            bomblist[currbomb].sety(bombposy)
+            bomblist[currbomb].setx(bombposx)
+
+            p2health -= 15
+
+def bombcollisions():
+    bombposy=random.randint(275, 285)
+    bombposx=random.randint(-475,475)
+    
+    for currbomb in range(0, numbombs):
+        currbomby = bomblist[currbomb].ycor()
+        if currbomby < -200:
+            bomblist[currbomb].sety(bombposy)
+            bomblist[currbomb].setx(bombposx)
+
+def createbombs():
+    global MAXBOMBS, numbombs, bomblist, neededbombs
+    
+    #check if you need to create more bombs,if not exit this function
+    #if you do then, calculate how many more you need to create and
+    #go in a loop for that number (or throw in some randomness)
+    
+    numbombs = len(bomblist)
+    
+    if numbombs >= MAXBOMBS:
+        pass
+    else:
+        neededbombs = MAXBOMBS - numbombs
+        for currbomb in range(0, neededbombs):
+            bomblist.append(Turtle())
+            bombposx=random.randint(-475,475)
+            bombposy=random.randint(275, 285)
+
+            bomblist[currbomb].hideturtle()
+            bomblist[currbomb].penup()
+            bomblist[currbomb].setx(bombposx)
+            bomblist[currbomb].sety(bombposy)
+            bomblist[currbomb].speed(0)
+            bomblist[currbomb].shape('circle')
+            bomblist[currbomb].shapesize(stretch_len=1.5,stretch_wid=1.5)
+            bomblist[currbomb].color("black")
+            bomblist[currbomb].showturtle()
+
+            bomblist[currbomb].setheading(270)
+        return
+
+def bombmovement():
+    for currbomb in range(0, numbombs):
+        bombspeed=random.randint(1, 10)
+        bomblist[currbomb].forward(bombspeed)
 
 #SCOREBOARD FUNCTIONS
 
-#calls player_names function, first function to run
 def background():
     player_names()
 
-
-#innitial scoreboard for playernames outside main loop. Fully customizable. 
 def writescoreboard():
     scoreboard.clear() 
     p1text = playernames[0]
@@ -154,37 +192,28 @@ def writescoreboard():
     else:
         scoreboard.write(bothplayer, font=("Courier",45, "bold"), align = "center")
 
-#health scoreboard for players
-#right below player name
-#takes in global p1 and p2 which are strings of 100 
 def healthscoreboard():
     global p1, p2
     scoreboard2.clear()
     healthprompt = "Health: " + str(p1health) + "           "  "Health: "  + str(p2health)
     scoreboard2.write(healthprompt, font=("Courier", 25, "bold"), align = "center")
 
-def winner():
-    return 
-
-#in background function
-#text input for player names 
+#def winner():
+    #def 
+    
 def player_names():
     p1name = screen.textinput("Player 1", "Player 1's name?")
     playernames.append(p1name)
     p2name = screen.textinput("Player 2", "Player 2's name")
     playernames.append(p2name) 
 
-#when pause is activated pause text appears 
 def pause_hud():
     scoreboard3.clear()
     pauseprompt = "Game Paused"
     scoreboard3.write(pauseprompt ,font=("Courier", 50, "bold"), align = "center")
 
 #PAUSE AND QUIT GAME
-
-#pause feature of game
-#if "space" key is pressed game is paused
-#quit is still enabled 
+    
 def pausegame():
     global pause
     if (pause == True):
@@ -200,8 +229,6 @@ def pausegame():
         
     return 
 
-#quit feature of game
-#if "q" key is pressed text input appears to verify if user wants to quit 
 def Quit():
     global running
     running = False
@@ -224,6 +251,9 @@ pause = False
 
 p1health = 100
 p2health = 100
+
+MAXBOMBS=10
+bomblist=[]
 
 #Constants
 playerxVelright = 30
@@ -305,10 +335,9 @@ while running:
     turtle.listen()
     if not (pause):
         healthscoreboard()
-        movement()
-    
-
-
-
-
-
+        createbombs()
+        bombmovement()
+        shipmovement()
+        p1collisions()
+        p2collisions()
+        bombcollisions()
