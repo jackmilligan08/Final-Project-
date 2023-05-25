@@ -87,20 +87,47 @@ def p2borders():
     return
 
 def p1collisions():
-    if abs(bomb.xcor() - player1.xcor())<40 and abs(bomb.ycor() - player1.ycor())<20:
-        collision = True
-        print("collision")
+    global p1health
+    
+    bombposy=random.randint(275, 285)
+    bombposx=random.randint(-475,475)
+    
+    for currbomb in range(0, numbombs):
+        if abs(bomblist[currbomb].xcor() - player1.xcor())<45 and abs(bomblist[currbomb].ycor() - player1.ycor())<20:
+
+            currbomby = bomblist[currbomb].ycor()
+            bomblist[currbomb].sety(bombposy)
+            bomblist[currbomb].setx(bombposx)
+
+            p1health -= 15
 
 def p2collisions():
-    if abs(bomb.xcor() - player2.xcor())<40 and abs(bomb.ycor() - player2.ycor())<20:
-        collision = True
-        print("collision")
+    global p2health
+    
+    bombposy=random.randint(275, 285)
+    bombposx=random.randint(-475,475)
+    
+    for currbomb in range(0, numbombs):
+        if abs(bomblist[currbomb].xcor() - player2.xcor())<45 and abs(bomblist[currbomb].ycor() - player2.ycor())<20:
+
+            currbomby = bomblist[currbomb].ycor()
+            bomblist[currbomb].sety(bombposy)
+            bomblist[currbomb].setx(bombposx)
+
+            p2health -= 15
 
 def bombcollisions():
-    return
+    bombposy=random.randint(275, 285)
+    bombposx=random.randint(-475,475)
+    
+    for currbomb in range(0, numbombs):
+        currbomby = bomblist[currbomb].ycor()
+        if currbomby < -200:
+            bomblist[currbomb].sety(bombposy)
+            bomblist[currbomb].setx(bombposx)
 
 def createbombs():
-    global MAXBOMBS, numbombs, bomblist, neededbombs, bomb
+    global MAXBOMBS, numbombs, bomblist, neededbombs
     
     #check if you need to create more bombs,if not exit this function
     #if you do then, calculate how many more you need to create and
@@ -128,7 +155,6 @@ def createbombs():
             bomblist[currbomb].showturtle()
 
             bomblist[currbomb].setheading(270)
-            bomb=bomblist[currbomb]
         return
 
 def bombmovement():
@@ -314,3 +340,4 @@ while running:
         shipmovement()
         p1collisions()
         p2collisions()
+        bombcollisions()
