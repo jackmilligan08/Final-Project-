@@ -3,7 +3,8 @@ from turtle import *
 import random
 import pygame
 import time
-import re 
+import re
+from pygame import mixer 
 
 #MUSIC 
 #must use quit (q) key to stop music
@@ -17,7 +18,8 @@ def play_audio():
         pygame.mixer.music.load(backgroundsound)
         #-1 allows music to always play 
         pygame.mixer.music.play(-1)
-        
+
+    
 #MOVEMENT FUNCTIONS
         
 def shipmovement():
@@ -94,12 +96,14 @@ def p1collisions():
     
     for currbomb in range(0, numbombs):
         if abs(bomblist[currbomb].xcor() - player1.xcor())<45 and abs(bomblist[currbomb].ycor() - player1.ycor())<20:
-
             currbomby = bomblist[currbomb].ycor()
             bomblist[currbomb].sety(bombposy)
             bomblist[currbomb].setx(bombposx)
-
-            p1health -= 15
+            bombsound = mixer.Sound("explosion.wav") 
+            bombsound.play()
+                
+            #CHANGE BOMB DAMAGE
+            p1health -= 10
 
 def p2collisions():
     global p2health
@@ -113,11 +117,25 @@ def p2collisions():
             currbomby = bomblist[currbomb].ycor()
             bomblist[currbomb].sety(bombposy)
             bomblist[currbomb].setx(bombposx)
+            bombsound = mixer.Sound("explosion.wav") 
+            bombsound.play()
+            
+            #CHANGE BOMB DAMAGE 
+            p2health -= 10
 
-            p2health -= 15
+
+#BOMB FUNCTIONS
+            
+def callbombfunctions():
+    createbombs()
+    bombmovement()
+    shipmovement()
+    p1collisions()
+    p2collisions()
+    bombcollisions()
 
 def bombcollisions():
-    bombposy=random.randint(275, 285)
+    bombposy=random.randint(275, 310)
     bombposx=random.randint(-475,475)
     
     for currbomb in range(0, numbombs):
@@ -142,7 +160,7 @@ def createbombs():
         for currbomb in range(0, neededbombs):
             bomblist.append(Turtle())
             bombposx=random.randint(-475,475)
-            bombposy=random.randint(275, 285)
+            bombposy=random.randint(275, 300)
 
             bomblist[currbomb].hideturtle()
             bomblist[currbomb].penup()
@@ -159,8 +177,10 @@ def createbombs():
 
 def bombmovement():
     for currbomb in range(0, numbombs):
-        bombspeed=random.randint(1, 10)
+        bombspeed=random.randint(15, 25)
         bomblist[currbomb].forward(bombspeed)
+
+
 
 #SCOREBOARD FUNCTIONS
 
@@ -197,9 +217,7 @@ def healthscoreboard():
     scoreboard2.clear()
     healthprompt = "Health: " + str(p1health) + "           "  "Health: "  + str(p2health)
     scoreboard2.write(healthprompt, font=("Courier", 25, "bold"), align = "center")
-
-#def winner():
-    #def 
+    winning()
     
 def player_names():
     p1name = screen.textinput("Player 1", "Player 1's name?")
@@ -211,6 +229,51 @@ def pause_hud():
     scoreboard3.clear()
     pauseprompt = "Game Paused"
     scoreboard3.write(pauseprompt ,font=("Courier", 50, "bold"), align = "center")
+    
+#called in health scoreboard 
+def winning(): 
+    global p1, p2, pause
+    
+    if p1health<= 0:
+        player1.shape("explosion.gif")
+        pause = True
+        screen.bgpic(picname="bg4.gif")
+        #changing scoreboard  
+        scoreboard3.clear()
+        scoreboard3.color("red")
+        #hiding other player and scoreboard  
+        player2.hideturtle()
+        scoreboard2.hideturtle()
+        for currbomb in range(0, numbombs):
+           bomblist[currbomb].hideturtle()
+        
+        if playernames[0] == "" and playernames[1] == "":
+            scoreboard3.write("Player 2 Wins!", font=("Courier", 75, "bold"), align = "center")
+        else:
+            scoreboard3.write(playernames[1] + "Wins", font=("Courier", 75, "bold"), align = "center")
+
+            
+    if p2health<= 0:
+        player2.shape("explosion.gif")
+        pause = True
+        screen.bgpic(picname="bg4.gif")
+        #changing scoreboard 
+        scoreboard3.clear()
+        scoreboard3.color("red")
+        #hiding other player 
+        player1.hideturtle()
+        scoreboard2.hideturtle()
+        for currbomb in range(0, numbombs):
+            bomblist[currbomb].hideturtle()
+        
+
+        if playernames[0] == "" and playernames[1] == "":  
+            scoreboard3.write("Player 1 Wins!", font=("Courier", 75, "bold"), align = "center")
+        else:
+            scoreboard3.write(playernames[0] + "Wins", font=("Courier", 75, "bold"), align = "center")
+    
+
+
 
 #PAUSE AND QUIT GAME
     
@@ -242,18 +305,18 @@ def Quit():
 
 
 #lists
-playernames = [] 
+playernames = []
+bomblist=[]
+
 
 #Global
 running = True
 
 pause = False  
-
 p1health = 100
 p2health = 100
 
-MAXBOMBS=10
-bomblist=[]
+MAXBOMBS=1
 
 #Constants
 playerxVelright = 30
@@ -296,6 +359,7 @@ turtle.addshape(name="player1right.gif", shape=None)
 turtle.addshape(name="player1left.gif", shape=None)
 turtle.addshape(name="player2right.gif", shape=None)
 turtle.addshape(name="player2left.gif", shape=None)
+turtle.addshape(name="explosion.gif", shape=None)
 
 #creating scoreboard
 scoreboard=turtle.Turtle()
@@ -335,9 +399,7 @@ while running:
     turtle.listen()
     if not (pause):
         healthscoreboard()
-        createbombs()
-        bombmovement()
-        shipmovement()
-        p1collisions()
-        p2collisions()
-        bombcollisions()
+        callbombfunctions()
+        shipmovement() 
+
+
