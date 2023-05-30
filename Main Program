@@ -18,7 +18,6 @@ from pygame import mixer
 #Raise Volume for optimal experience 
 
 
-
 #MUSIC 
 #must use quit (q) key to stop music
 #otherwise you have to close entire idle shell
@@ -36,7 +35,7 @@ def play_audio():
 
     
 #MOVEMENT FUNCTIONS
-#function for both players movement and borders  
+#function for both players movement and borders
 def shipmovement():
     turtle.onkey(p1right, "d")
     turtle.onkey(p1left, "a")
@@ -48,12 +47,6 @@ def shipmovement():
     p1borders()
     p2borders()
 
-p1right=False 
-p1left=False
-p1right=False
-p1left=False 
-
-
 
 #function occurs when "d" key is pressed
 #changes shape of player 2 boat to right facing 
@@ -63,12 +56,7 @@ def p1right():
     if not pause:
         p1xcor = player1.xcor()
         player1.setx(p1xcor+playerxVelright)
-        p1right=True
-        if p1right==True: 
-        #todo - possibly optimize by only setting shape if it changed direction 5/15
-            player1.shape("player1right.gif")
-        else:
-            p1right=False
+        player1.shape("player1right.gif")
 
 
 #function occurs when "a" key  is pressed
@@ -103,6 +91,7 @@ def p2left():
         player2.setx(p2xcor+playerxVelleft)
         player2.shape("player2left.gif")
 
+
 #function detects collison of player 1 with any of the edges(-440 or 440),
 #and sends the boat to the opposite side  
 def p1borders():
@@ -111,7 +100,8 @@ def p1borders():
         player1.setx(-1*p1xcor+25)
     if p1xcor<LEFT_EDGE:
         player1.setx(-1*p1xcor-25)
-        
+
+
 #function detects collison of player 2 with any of the edges(-440 or 440),
 #and sends the boat to the opposite side  
 def p2borders():
@@ -122,9 +112,9 @@ def p2borders():
         player2.setx(-1*p2xcor-25)
     return
 
-#BOMB FUNCTIONS 
-
-
+#function detects if player 1 has been hit by a bomb
+#plays the explosion sound effect and removes health from player 1
+#moves the bomb that hit to a random position at the top of the screen
 def p1collisions():
     global p1health
     
@@ -142,6 +132,9 @@ def p1collisions():
             #CHANGE BOMB DAMAGE
             p1health -= 10
 
+#function detects if player 2 has been hit by a bomb
+#plays the explosion sound effect and removes health from player 2
+#moves the bomb that hit to a random position at the top of the screen
 def p2collisions():
     global p2health
     
@@ -160,17 +153,22 @@ def p2collisions():
             #CHANGE BOMB DAMAGE 
             p2health -= 10
 
+
 #BOMB FUNCTIONS
-            
+
+
+#function to call the other bomb functions
 def callbombfunctions():
     createbombs()
     bombmovement()
     shipmovement()
     p1collisions()
     p2collisions()
-    bombcollisions()
+    bombrespawning()
 
-def bombcollisions():
+#detects if bombs have reached the bottom of the screen
+#moves the bomb to a random position at the top of the screen
+def bombrespawning():
     bombposy=random.randint(275, 310)
     bombposx=random.randint(-475,475)
     
@@ -180,12 +178,11 @@ def bombcollisions():
             bomblist[currbomb].sety(bombposy)
             bomblist[currbomb].setx(bombposx)
 
+#creates the specified number of bombs (variable MAXBOMBS)
+#spawns them in random positions at the top of the screen
+#gives the bombs a 270 degree heading (down) and other needed qualities
 def createbombs():
     global MAXBOMBS, numbombs, bomblist, neededbombs
-    
-    #check if you need to create more bombs,if not exit this function
-    #if you do then, calculate how many more you need to create and
-    #go in a loop for that number (or throw in some randomness)
     
     numbombs = len(bomblist)
     
@@ -211,6 +208,7 @@ def createbombs():
             bomblist[currbomb].setheading(270)
         return
 
+#allows the bombs to move, and gives each of them a random speed between 10-30
 def bombmovement():
     for currbomb in range(0, numbombs):
 
@@ -222,9 +220,12 @@ def bombmovement():
 
 #SCOREBOARD FUNCTIONS
 
-def background():
+#allows the players to choose their names prior to the game starting
+def chooseplayernames():
     player_names()
 
+#creates the player's names in the scoreboard if they do not make a custom one
+#creates the space for the custom names
 def writescoreboard():
     scoreboard.clear() 
     p1text = playernames[0]
@@ -250,19 +251,23 @@ def writescoreboard():
     else:
         scoreboard.write(bothplayer, font=("Courier",45, "bold"), align = "center")
 
+#displays the current health of each player in the scoreboard
+#calls the winning function when a player's health reaches 0
 def healthscoreboard():
     global p1, p2
     scoreboard2.clear()
     healthprompt = "Health: " + str(p1health) + "           "  "Health: "  + str(p2health)
     scoreboard2.write(healthprompt, font=("Courier", 25, "bold"), align = "center")
     winning()
-    
+
+#inputs the custom names into the scoreboard
 def player_names():
     p1name = screen.textinput("Player 1", "Player 1's name?")
     playernames.append(p1name)
     p2name = screen.textinput("Player 2", "Player 2's name")
     playernames.append(p2name) 
 
+#creates the text that is displayed when the game is paused
 def pause_hud():
     scoreboard3.clear()
     pauseprompt = "Game Paused"
@@ -271,7 +276,9 @@ def pause_hud():
 #called in health scoreboard
 #calls winning feature of game
 #if a player has 0 health the function will run
-    
+
+#creates the screen the is displayed when a player reaches 0 health,
+#and the other player wins
 def winning(): 
     global p1, p2, pause
     
@@ -329,7 +336,10 @@ def winning():
 
 
 #PAUSE AND QUIT GAME
-    
+
+#called when space bar is pressed
+#makes pausen True upon pressing
+#displays the pause words and suspends gameplay until pressed again
 def pausegame():
     global pause
     if (pause == True):
@@ -345,6 +355,10 @@ def pausegame():
         
     return 
 
+#called when "q" key is pressed
+#requests player to confirm Yes or No
+#quits the game if Yes, or anything starting with "Y" is entered
+#continues as usual if No or anything else not starting with "Y" is entered
 def Quit():
     global running
     running = False
@@ -441,7 +455,7 @@ scoreboard3.color("Black")
 bombsound = "explosion.wav" 
 
 #Functions not used in while true loop
-background()
+chooseplayernames()
 #out of main loop to prevent lag 
 writescoreboard() 
 play_audio()
@@ -455,5 +469,4 @@ while running:
         healthscoreboard()
         callbombfunctions()
         shipmovement() 
-
 
