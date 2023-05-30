@@ -2,7 +2,6 @@ import turtle
 from turtle import * 
 import random
 import pygame
-import time
 import re
 from pygame import mixer 
 
@@ -230,39 +229,54 @@ def pause_hud():
     pauseprompt = "Game Paused"
     scoreboard3.write(pauseprompt ,font=("Courier", 50, "bold"), align = "center")
     
-#called in health scoreboard 
+#called in health scoreboard
+#calls winning feature of game
+#if a player has 0 health the function will run
+    
 def winning(): 
     global p1, p2, pause
     
     if p1health<= 0:
-        player1.shape("explosion.gif")
+        player1.shape("nuke.gif")
         pause = True
         screen.bgpic(picname="bg4.gif")
-        #changing scoreboard  
+        #changing scoreboard to red 
         scoreboard3.clear()
         scoreboard3.color("red")
-        #hiding other player and scoreboard  
+        
+        #hiding other playerers turtle 
         player2.hideturtle()
-        scoreboard2.hideturtle()
+        
+        #clearing health scoreboard 
+        scoreboard2.clear() 
+        scoreboard2.goto(1000,1000)
+        
+        #hiding bombs on screen 
         for currbomb in range(0, numbombs):
            bomblist[currbomb].hideturtle()
         
         if playernames[0] == "" and playernames[1] == "":
             scoreboard3.write("Player 2 Wins!", font=("Courier", 75, "bold"), align = "center")
         else:
-            scoreboard3.write(playernames[1] + "Wins", font=("Courier", 75, "bold"), align = "center")
+            scoreboard3.write(playernames[1] + " Wins ", font=("Courier", 75, "bold"), align = "center")
 
             
     if p2health<= 0:
-        player2.shape("explosion.gif")
+        player2.shape("nuke.gif")
         pause = True
         screen.bgpic(picname="bg4.gif")
         #changing scoreboard 
         scoreboard3.clear()
         scoreboard3.color("red")
+        
         #hiding other player 
         player1.hideturtle()
-        scoreboard2.hideturtle()
+
+        #clearing health scoreboard 
+        scoreboard2.clear() 
+        scoreboard2.goto(1000,1000)
+
+        #hiding bombs on screen 
         for currbomb in range(0, numbombs):
             bomblist[currbomb].hideturtle()
         
@@ -270,7 +284,7 @@ def winning():
         if playernames[0] == "" and playernames[1] == "":  
             scoreboard3.write("Player 1 Wins!", font=("Courier", 75, "bold"), align = "center")
         else:
-            scoreboard3.write(playernames[0] + "Wins", font=("Courier", 75, "bold"), align = "center")
+            scoreboard3.write(playernames[0] + " Wins ", font=("Courier", 75, "bold"), align = "center")
     
 
 
@@ -316,7 +330,7 @@ pause = False
 p1health = 100
 p2health = 100
 
-MAXBOMBS=1
+MAXBOMBS=10
 
 #Constants
 playerxVelright = 30
@@ -359,7 +373,8 @@ turtle.addshape(name="player1right.gif", shape=None)
 turtle.addshape(name="player1left.gif", shape=None)
 turtle.addshape(name="player2right.gif", shape=None)
 turtle.addshape(name="player2left.gif", shape=None)
-turtle.addshape(name="explosion.gif", shape=None)
+turtle.addshape(name="nuke.gif", shape=None)
+
 
 #creating scoreboard
 scoreboard=turtle.Turtle()
@@ -401,5 +416,4 @@ while running:
         healthscoreboard()
         callbombfunctions()
         shipmovement() 
-
 
