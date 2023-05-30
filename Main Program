@@ -1,3 +1,9 @@
+#LIBRARYS 
+#pygame is used for sound
+#re is used for quit feature of game
+#turtle is the main library that allows our game to operate
+#random is used to randomize bomb spawns 
+
 import turtle
 from turtle import * 
 import random
@@ -5,9 +11,19 @@ import pygame
 import re
 from pygame import mixer 
 
+#NOTES
+#Download all gif images and sounds from google drive folder (found on github)
+#Make sure .py file is in a folder with all the items 
+#Make sure caps lock is off
+#Raise Volume for optimal experience 
+
+
+
 #MUSIC 
 #must use quit (q) key to stop music
-#otherwise you have to close entire idle shell 
+#otherwise you have to close entire idle shell
+
+#fuction plays background audio for the game, out of main loop 
 def play_audio():
     global pause 
     if not pause:
@@ -20,7 +36,7 @@ def play_audio():
 
     
 #MOVEMENT FUNCTIONS
-        
+#function for both players movement and borders  
 def shipmovement():
     turtle.onkey(p1right, "d")
     turtle.onkey(p1left, "a")
@@ -38,6 +54,10 @@ p1right=False
 p1left=False 
 
 
+
+#function occurs when "d" key is pressed
+#changes shape of player 2 boat to right facing 
+#takes in global pause for pause feature of game
 def p1right():
     global pause 
     if not pause:
@@ -50,6 +70,10 @@ def p1right():
         else:
             p1right=False
 
+
+#function occurs when "a" key  is pressed
+#changes shape of player 2 boat to left facing 
+#takes in global pause for pause feature of game
 def p1left():
     global pause 
     if not pause:
@@ -57,6 +81,10 @@ def p1left():
         player1.setx(p1xcor+playerxVelleft)
         player1.shape("player1left.gif")
 
+
+#function occurs when right arrow keyis pressed
+#changes shape of player 2 boat to right facing 
+#takes in global pause for pause feature of game
 def p2right():
     global pause 
     if not pause:
@@ -64,6 +92,10 @@ def p2right():
         player2.setx(p2xcor+playerxVelright)
         player2.shape("player2right.gif")
 
+
+#function occurs when left key  is pressed
+#changes shape of player 2 boat to left facing 
+#takes in global pause for pause feature of game
 def p2left():
     global pause
     if not pause:
@@ -71,14 +103,17 @@ def p2left():
         player2.setx(p2xcor+playerxVelleft)
         player2.shape("player2left.gif")
 
-
+#function detects collison of player 1 with any of the edges(-440 or 440),
+#and sends the boat to the opposite side  
 def p1borders():
     p1xcor = player1.xcor()
     if p1xcor>RIGHT_EDGE:
         player1.setx(-1*p1xcor+25)
     if p1xcor<LEFT_EDGE:
         player1.setx(-1*p1xcor-25)
-
+        
+#function detects collison of player 2 with any of the edges(-440 or 440),
+#and sends the boat to the opposite side  
 def p2borders():
     p2xcor = player2.xcor()
     if p2xcor>RIGHT_EDGE:
@@ -86,6 +121,9 @@ def p2borders():
     if p2xcor<LEFT_EDGE:
         player2.setx(-1*p2xcor-25)
     return
+
+#BOMB FUNCTIONS 
+
 
 def p1collisions():
     global p1health
@@ -121,7 +159,6 @@ def p2collisions():
             
             #CHANGE BOMB DAMAGE 
             p2health -= 10
-
 
 #BOMB FUNCTIONS
             
@@ -176,7 +213,9 @@ def createbombs():
 
 def bombmovement():
     for currbomb in range(0, numbombs):
-        bombspeed=random.randint(15, 25)
+
+        #CHANGE BOMB SPEED 
+        bombspeed=random.randint(10, 30)
         bomblist[currbomb].forward(bombspeed)
 
 
@@ -416,4 +455,5 @@ while running:
         healthscoreboard()
         callbombfunctions()
         shipmovement() 
+
 
